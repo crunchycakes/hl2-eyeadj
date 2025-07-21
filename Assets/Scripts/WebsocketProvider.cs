@@ -125,20 +125,28 @@ public class WebsocketProvider : MonoBehaviour
 
         // IMPROVE THESE MAGIC NUMBERS!!
         //pv.transform.localPosition = new Vector3((sliderValuex - 50) * 0.0020f, (sliderValuey - 50) * 0.00075f, (sliderValuea - 50) * 0.001f + 0.15f);
-        pv.transform.localPosition = new Vector3(0, 0, (sliderValuea - 50) * 0.001f + 0.15f);
+        
+        float intraOffset;
+        float centerOffset;
         if (goodeyeisright)
         {
             MainCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Right;
             OffCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Left;
+            intraOffset = 0.04f;
+            centerOffset = 0.01f;
         }
         else
         {
             MainCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Left;
             OffCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Right;
+            intraOffset = -0.04f;
+            centerOffset = -0.01f;
         }
 
-        OffCamera.transform.localPosition = new Vector3(-dioptersToDist(sliderValuex), -dioptersToDist(sliderValuey), 0);
-        OffCamera.transform.eulerAngles = new Vector3(0, 0, sliderValued-90);
+        pv.transform.localPosition = new Vector3(centerOffset, -0.0075f, (sliderValuea - 50) * 0.001f + 0.15f);
+
+        OffCamera.transform.localPosition = new Vector3(intraOffset+dioptersToDist(sliderValuex), +dioptersToDist(sliderValuey), 0);
+        OffCamera.transform.localEulerAngles = new Vector3(0, 0, -sliderValued);
         //pv.transform.eulerAngles = new Vector3(sliderValued-180, 90, -90);
     }
 

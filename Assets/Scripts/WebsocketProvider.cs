@@ -145,8 +145,8 @@ public class WebsocketProvider : MonoBehaviour
 
         pv.transform.localPosition = new Vector3(centerOffset, -0.0075f, (sliderValuea - 50) * 0.001f + 0.15f);
 
-        OffCamera.transform.localPosition = new Vector3(intraOffset+dioptersToDist(sliderValuex), +dioptersToDist(sliderValuey), 0);
-        OffCamera.transform.localEulerAngles = new Vector3(0, 0, -sliderValued);
+        OffCamera.transform.localPosition = new Vector3(intraOffset-dioptersToDist(sliderValuex), -dioptersToDist(sliderValuey), ((sliderValuea - 50) * 0.002f));
+        OffCamera.transform.localEulerAngles = new Vector3(0, 0, sliderValued);
         //pv.transform.eulerAngles = new Vector3(sliderValued-180, 90, -90);
     }
 

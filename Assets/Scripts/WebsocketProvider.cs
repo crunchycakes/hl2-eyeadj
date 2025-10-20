@@ -13,12 +13,20 @@ public class WebsocketProvider : MonoBehaviour
     public float sliderValued;
     public float sliderValuedo;
     public float sliderValuea;
+    public float sliderValuemm;
+    public float sliderValuemd;
+    public float sliderValuemx;
+    public float sliderValuemy;
     public bool goodeyeisright;
     
     public GameObject pv;
 
     public GameObject MainCamera;
+    private MembraneDistort mainCameraDistort;
+    private Camera mc;
     public GameObject OffCamera;
+    private MembraneDistort offCameraDistort;
+    private Camera oc;
 
     // vars for periodically ping to keep alive
     private float time = 0.0f;
@@ -26,6 +34,11 @@ public class WebsocketProvider : MonoBehaviour
 
     void Start()
     {
+        mainCameraDistort = MainCamera.GetComponent<MembraneDistort>();
+        offCameraDistort = OffCamera.GetComponent<MembraneDistort>();
+        mc = MainCamera.GetComponent<Camera>();
+        oc = OffCamera.GetComponent<Camera>();
+
         string serverUrl = "wss://hl2-torsion-71297cc1c5dc.herokuapp.com/ws";
 
         ws = new WebSocket(serverUrl);
@@ -74,6 +87,26 @@ public class WebsocketProvider : MonoBehaviour
                 {
                     sliderValuea = val;
                     Debug.Log("slider a updated: " + sliderValuea);
+                }
+                else if (sliderId == "slidermm")
+                {
+                    sliderValuemm = val;
+                    Debug.Log("slider mm updated: " + sliderValuemm);
+                }
+                else if (sliderId == "slidermd")
+                {
+                    sliderValuemd = val;
+                    Debug.Log("slider md updated: " + sliderValuemd);
+                }
+                else if (sliderId == "slidermx")
+                {
+                    sliderValuemx = val;
+                    Debug.Log("slider mx updated: " + sliderValuemx);
+                }
+                else if (sliderId == "slidermy")
+                {
+                    sliderValuemy = val;
+                    Debug.Log("slider my updated: " + sliderValuemy);
                 }
 
                 // GET RID OF THESE MAGIC NUMS!!!
@@ -130,20 +163,27 @@ public class WebsocketProvider : MonoBehaviour
         float centerOffset;
         if (goodeyeisright)
         {
-            MainCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Right;
-            OffCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Left;
+            mc.stereoTargetEye = StereoTargetEyeMask.Right;
+            oc.stereoTargetEye = StereoTargetEyeMask.Left;
             intraOffset = 0.04f;
             centerOffset = 0.01f;
         }
         else
         {
-            MainCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Left;
-            OffCamera.GetComponent<Camera>().stereoTargetEye = StereoTargetEyeMask.Right;
+            mc.stereoTargetEye = StereoTargetEyeMask.Left;
+            oc.stereoTargetEye = StereoTargetEyeMask.Right;
             intraOffset = -0.04f;
             centerOffset = -0.01f;
         }
 
         pv.transform.localPosition = new Vector3(centerOffset, -0.0075f, (sliderValuea - 50) * 0.001f + 0.15f);
+
+        // membrane distort
+        offCameraDistort.center = new Vector2((sliderValuemx + 100) * 0.005f, (sliderValuemy + 100) * 0.005f);
+        offCameraDistort.radius = sliderValuemd * 0.01f;
+        offCameraDistort.magnitude = (sliderValuemm + 100) * 0.01f;
+
+        mainCameraDistort.magnitude = 1f;
 
         OffCamera.transform.localPosition = new Vector3(intraOffset-dioptersToDist(sliderValuex), -dioptersToDist(sliderValuey), ((sliderValuea - 50) * 0.002f));
         OffCamera.transform.localEulerAngles = new Vector3(0, 0, -sliderValued);

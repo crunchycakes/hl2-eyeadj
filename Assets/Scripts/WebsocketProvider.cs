@@ -2,6 +2,7 @@ using UnityEngine;
 using WebSocketSharp;
 using Newtonsoft.Json.Linq;
 using System;
+using UnityEngine.Audio;
 
 public class WebsocketProvider : MonoBehaviour
 {
@@ -145,7 +146,21 @@ public class WebsocketProvider : MonoBehaviour
     void Update()
     {
         // Optional: Ping server every 30s to keep alive (Heroku idle timeout)
+        /*
         if (ws != null && ws.IsAlive)
+        {
+            time += Time.deltaTime;
+            if (time >= pingPeriod)
+            {
+                time = 0.0f;
+                ws.Send("unity keepalive");
+                Debug.Log("pinged to keep alive");
+            }
+        }
+        */
+
+        // we still ping regardless; we just do not check ws.IsAlive, as checking it is prohibitively slow
+        if (ws != null)
         {
             time += Time.deltaTime;
             if (time >= pingPeriod)
@@ -185,8 +200,16 @@ public class WebsocketProvider : MonoBehaviour
 
         mainCameraDistort.magnitude = 1f;
 
-        OffCamera.transform.localPosition = new Vector3(intraOffset-dioptersToDist(sliderValuex), -dioptersToDist(sliderValuey), ((sliderValuea - 50) * 0.002f));
-        OffCamera.transform.localEulerAngles = new Vector3(0, 0, -sliderValued);
+        //nystagmus
+        float yOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemy * 0.0005f;
+        float xOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemx * 0.0005f;
+        float rotOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemm * 0.5f;
+
+        MainCamera.transform.localPosition = new Vector3(xOffset, yOffset, 0);
+        MainCamera.transform.localEulerAngles = new Vector3(0, 0, rotOffset);
+
+        OffCamera.transform.localPosition = new Vector3(intraOffset-dioptersToDist(sliderValuex)+xOffset, -dioptersToDist(sliderValuey)+yOffset, ((sliderValuea - 50) * 0.002f));
+        OffCamera.transform.localEulerAngles = new Vector3(0, 0, -sliderValued+rotOffset);
         //pv.transform.eulerAngles = new Vector3(sliderValued-180, 90, -90);
     }
 

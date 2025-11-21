@@ -19,6 +19,7 @@ public class WebsocketProvider : MonoBehaviour
     public float sliderValuemx;
     public float sliderValuemy;
     public bool goodeyeisright;
+    public bool waveIsPendular;
     
     public GameObject pv;
 
@@ -108,6 +109,17 @@ public class WebsocketProvider : MonoBehaviour
                 {
                     sliderValuemy = val;
                     Debug.Log("slider my updated: " + sliderValuemy);
+                }
+                else if (sliderId == "buttonwave")
+                {
+                    if (val == 1)
+                    {
+                        waveIsPendular = true;
+                    } else
+                    {
+                        waveIsPendular = false;
+                    }
+                    Debug.Log("wave type updated: " + waveIsPendular.ToString());
                 }
 
                 // GET RID OF THESE MAGIC NUMS!!!
@@ -201,9 +213,22 @@ public class WebsocketProvider : MonoBehaviour
         mainCameraDistort.magnitude = 1f;
 
         //nystagmus
-        float yOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemy * 0.0005f;
-        float xOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemx * 0.0005f;
-        float rotOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemm * 0.5f;
+        float yOffset = 0;
+        float xOffset = 0;
+        float rotOffset = 0;
+        
+        if (waveIsPendular)
+        {
+            yOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemy * 0.0005f;
+            xOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemx * 0.0005f;
+            rotOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemm * 0.5f;
+        } else
+        {
+            yOffset = ((Time.time * sliderValuemd) % 1) * sliderValuemy * 0.0005f;
+            xOffset = ((Time.time * sliderValuemd) % 1) * sliderValuemx * 0.0005f;
+            rotOffset = ((Time.time * sliderValuemd) % 1) * sliderValuemm * 0.5f;
+        }
+        
 
         MainCamera.transform.localPosition = new Vector3(xOffset, yOffset, 0);
         MainCamera.transform.localEulerAngles = new Vector3(0, 0, rotOffset);

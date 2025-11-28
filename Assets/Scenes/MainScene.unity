@@ -678,7 +678,19 @@ MonoBehaviour:
   sliderValuemd: 0
   sliderValuemx: 0
   sliderValuemy: 0
+  sliderValuenxf: 0
+  sliderValuenxm: 0
+  sliderValuenxp: 0
+  sliderValuenyf: 0
+  sliderValuenym: 0
+  sliderValuenyp: 0
+  sliderValuentf: 0
+  sliderValuentm: 0
+  sliderValuentp: 0
   goodeyeisright: 0
+  HorizontalWaveType: 0
+  VerticalWaveType: 0
+  TorsionalWaveType: 0
   pv: {fileID: 335869521}
   MainCamera: {fileID: 466220020}
   OffCamera: {fileID: 1981644340}
@@ -853,6 +865,7 @@ GameObject:
   - component: {fileID: 1547594908}
   - component: {fileID: 1547594911}
   - component: {fileID: 1547594912}
+  - component: {fileID: 1547594913}
   m_Layer: 0
   m_Name: GazeSource
   m_TagString: MainCamera
@@ -877,8 +890,8 @@ Camera:
   m_GameObject: {fileID: 1547594904}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1018,6 +1031,24 @@ MonoBehaviour:
   magnitude: 1
   radius: 0.2
   center: {x: 0.5, y: 0.5}
+--- !u!114 &1547594913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547594904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Device: 0
+  m_PoseSource: 2
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
 --- !u!1 &1976198706
 GameObject:
   m_ObjectHideFlags: 0

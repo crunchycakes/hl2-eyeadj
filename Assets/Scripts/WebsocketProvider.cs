@@ -18,8 +18,19 @@ public class WebsocketProvider : MonoBehaviour
     public float sliderValuemd;
     public float sliderValuemx;
     public float sliderValuemy;
+    public float sliderValuenxf;
+    public float sliderValuenxm;
+    public float sliderValuenxp;
+    public float sliderValuenyf;
+    public float sliderValuenym;
+    public float sliderValuenyp;
+    public float sliderValuentf;
+    public float sliderValuentm;
+    public float sliderValuentp;
     public bool goodeyeisright;
-    public bool waveIsPendular;
+    public int HorizontalWaveType;
+    public int VerticalWaveType;
+    public int TorsionalWaveType;
     
     public GameObject pv;
 
@@ -55,6 +66,7 @@ public class WebsocketProvider : MonoBehaviour
         };
 
         // Called when receiving messages
+        // TODO: much much cleaner with a dict
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log("!!!!! websocket received: " + e.Data);
@@ -110,16 +122,65 @@ public class WebsocketProvider : MonoBehaviour
                     sliderValuemy = val;
                     Debug.Log("slider my updated: " + sliderValuemy);
                 }
-                else if (sliderId == "buttonwave")
+                else if (sliderId == "slidernxf")
                 {
-                    if (val == 1)
-                    {
-                        waveIsPendular = true;
-                    } else
-                    {
-                        waveIsPendular = false;
-                    }
-                    Debug.Log("wave type updated: " + waveIsPendular.ToString());
+                    sliderValuenxf = val;
+                    Debug.Log("slider nxf updated: " + sliderValuenxf);
+                }
+                else if (sliderId == "slidernxm")
+                {
+                    sliderValuenxm = val;
+                    Debug.Log("slider nxm updated: " + sliderValuenxm);
+                }
+                else if (sliderId == "slidernxp")
+                {
+                    sliderValuenxp = val;
+                    Debug.Log("slider nxp updated: " + sliderValuenxp);
+                }
+                else if (sliderId == "slidernyf")
+                {
+                    sliderValuenyf = val;
+                    Debug.Log("slider nyf updated: " + sliderValuenyf);
+                }
+                else if (sliderId == "slidernym")
+                {
+                    sliderValuenym = val;
+                    Debug.Log("slider nym updated: " + sliderValuenym);
+                }
+                else if (sliderId == "slidernyp")
+                {
+                    sliderValuenyp = val;
+                    Debug.Log("slider nyp updated: " + sliderValuenyp);
+                }
+                else if (sliderId == "sliderntf")
+                {
+                    sliderValuentf = val;
+                    Debug.Log("slider ntf updated: " + sliderValuentf);
+                }
+                else if (sliderId == "sliderntm")
+                {
+                    sliderValuentm = val;
+                    Debug.Log("slider ntm updated: " + sliderValuentm);
+                }
+                else if (sliderId == "sliderntp")
+                {
+                    sliderValuentp = val;
+                    Debug.Log("slider ntp updated: " + sliderValuentp);
+                }
+                else if (sliderId == "dropnxw")
+                {
+                    HorizontalWaveType = Mathf.RoundToInt(val);
+                    Debug.Log("dropdown nxw updated: " + HorizontalWaveType);
+                }
+                else if (sliderId == "dropnyw")
+                {
+                    VerticalWaveType = Mathf.RoundToInt(val);
+                    Debug.Log("dropdown nyw updated: " + VerticalWaveType);
+                }
+                else if (sliderId == "dropntw")
+                {
+                    TorsionalWaveType = Mathf.RoundToInt(val);
+                    Debug.Log("dropdown ntw updated: " + TorsionalWaveType);
                 }
 
                 // GET RID OF THESE MAGIC NUMS!!!
@@ -217,6 +278,7 @@ public class WebsocketProvider : MonoBehaviour
         float xOffset = 0;
         float rotOffset = 0;
         
+        /*
         if (waveIsPendular)
         {
             yOffset = Mathf.Sin(Time.time * sliderValuemd) * sliderValuemy * 0.0005f;
@@ -228,7 +290,61 @@ public class WebsocketProvider : MonoBehaviour
             xOffset = ((Time.time * sliderValuemd) % 1) * sliderValuemx * 0.0005f;
             rotOffset = ((Time.time * sliderValuemd) % 1) * sliderValuemm * 0.5f;
         }
-        
+        */
+
+        // TODO: again this is much in need of refactoring
+        // 0 is pendular, 1 is jerk linear, 2 is jerk accel, 3 is jerk decel
+
+        if (HorizontalWaveType == 0)
+        {
+            xOffset = Mathf.Sin(Time.time * ((sliderValuenxf/100f)*2f*Mathf.PI) + Mathf.Deg2Rad*sliderValuenxp) * dioptersToDist(sliderValuenxm);
+        }
+        else if (HorizontalWaveType == 1)
+        {
+            xOffset = (((Time.time * sliderValuenxf/100f) + sliderValuenxp/360f) % 1) * dioptersToDist(sliderValuenxm);
+        }
+        else if (HorizontalWaveType == 2)
+        {
+            xOffset = Mathf.Pow(((Time.time * sliderValuenxf/100f) + sliderValuenxp/360f) % 1, 3) * dioptersToDist(sliderValuenxm);
+        }
+        else if (HorizontalWaveType == 3)
+        {
+            xOffset = Mathf.Pow(((Time.time * sliderValuenxf/100f) + sliderValuenxp/360f) % 1, 1f/3f) * dioptersToDist(sliderValuenxm);
+        }
+
+        if (VerticalWaveType == 0)
+        {
+            yOffset = Mathf.Sin(Time.time * ((sliderValuenyf/100f)*2f*Mathf.PI) + Mathf.Deg2Rad*sliderValuenyp) * dioptersToDist(sliderValuenym);
+        }
+        else if (VerticalWaveType == 1)
+        {
+            yOffset = (((Time.time * sliderValuenyf/100f) + sliderValuenyp/360f) % 1) * dioptersToDist(sliderValuenym);
+        }
+        else if (VerticalWaveType == 2)
+        {
+            yOffset = Mathf.Pow(((Time.time * sliderValuenyf/100f) + sliderValuenyp/360f) % 1, 3) * dioptersToDist(sliderValuenym);
+        }
+        else if (VerticalWaveType == 3)
+        {
+            yOffset = Mathf.Pow(((Time.time * sliderValuenyf/100f) + sliderValuenyp/360f) % 1, 1f/3f) * dioptersToDist(sliderValuenym);
+        }
+
+        if (TorsionalWaveType == 0)
+        {
+            rotOffset = Mathf.Sin(Time.time * ((sliderValuentf/100f)*2f*Mathf.PI) + Mathf.Deg2Rad*sliderValuentp) * sliderValuentm;
+        }
+        else if (TorsionalWaveType == 1)
+        {
+            rotOffset = (((Time.time * sliderValuentf/100f) + sliderValuentp/360f) % 1) * sliderValuentm;
+        }
+        else if (TorsionalWaveType == 2)
+        {
+            rotOffset = Mathf.Pow(((Time.time * sliderValuentf/100f) + sliderValuentp/360f) % 1, 3) * sliderValuentm;
+        }
+        else if (TorsionalWaveType == 3)
+        {
+            rotOffset = Mathf.Pow(((Time.time * sliderValuentf/100f) + sliderValuentp/360f) % 1, 1f/3f) * sliderValuentm;
+        }
 
         MainCamera.transform.localPosition = new Vector3(xOffset, yOffset, 0);
         MainCamera.transform.localEulerAngles = new Vector3(0, 0, rotOffset);

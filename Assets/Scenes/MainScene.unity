@@ -312,6 +312,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &334897033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 334897034}
+  m_Layer: 0
+  m_Name: PVParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &334897034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334897033}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0075, z: 0.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 335869522}
+  m_Father: {fileID: 1547594907}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &335869521
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,13 +369,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335869521}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.0075, z: 0.15}
-  m_LocalScale: {x: -0.019199999, y: 1, z: 0.010799996}
+  m_LocalRotation: {x: 0, y: -0.70710677, z: -0.70710677, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -0.019199999, y: 1, z: 0.010799995}
   m_Children: []
-  m_Father: {fileID: 1547594907}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -90, y: 90, z: -90}
+  m_Father: {fileID: 334897034}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: -90, z: -90}
 --- !u!64 &335869523
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -421,11 +452,11 @@ GameObject:
   - component: {fileID: 466220023}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &466220021
 Transform:
   m_ObjectHideFlags: 0
@@ -475,7 +506,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 1
+  m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
@@ -636,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 817663977}
   - component: {fileID: 817663978}
+  - component: {fileID: 817663979}
   m_Layer: 0
   m_Name: Admin
   m_TagString: Untagged
@@ -664,7 +696,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817663976}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ede7a46b0f4d566468d01c7ac463a741, type: 3}
   m_Name: 
@@ -695,6 +727,20 @@ MonoBehaviour:
   MainCamera: {fileID: 466220020}
   OffCamera: {fileID: 1981644340}
   pingPeriod: 30
+--- !u!114 &817663979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817663976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed55c69d1ff643448168b8bd208152d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _PV: {fileID: 334897033}
+  _eyePos: {fileID: 1547594904}
 --- !u!1 &832727308
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,8 +936,8 @@ Camera:
   m_GameObject: {fileID: 1547594904}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -938,7 +984,7 @@ Transform:
   - {fileID: 1981644341}
   - {fileID: 832727309}
   - {fileID: 466220021}
-  - {fileID: 335869522}
+  - {fileID: 334897034}
   m_Father: {fileID: 607668320}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1160,7 +1206,7 @@ GameObject:
   - component: {fileID: 1981644343}
   m_Layer: 0
   m_Name: Off Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1214,7 +1260,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 2
+  m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
